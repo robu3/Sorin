@@ -13,7 +13,7 @@ namespace Sorin.Tests
         {
             int seed = 2018;
             State<string> sticky = new State<string>("sticky", seed);
-            State<string> coin = new State<string>("stateB", seed); 
+            State<string> coin = new State<string>("coin", seed); 
 
             sticky.AddLink(new Link<string>(coin, .2));
             sticky.AddLink(new Link<string>(sticky, .8));
@@ -21,18 +21,19 @@ namespace Sorin.Tests
             coin.AddLink(new Link<string>(sticky, .5));
 
             Dictionary<State<string>, int> counter = new Dictionary<State<string>, int>();
+            State<string> current = sticky;
             for (int i = 0; i < 100; i++)
             {
-                State<string> s = sticky.Transition();
-                counter[s] = (counter.ContainsKey(s) ? counter[s] : 0) + 1;
+                current = current.Transition();
+                counter[current] = (counter.ContainsKey(current) ? counter[current] : 0) + 1;
             }
 
             int total = counter[sticky] + counter[coin];
 
             Assert.AreEqual(100, total);
             Assert.IsTrue(counter[sticky] > counter[coin]);
-            Assert.AreEqual(79, counter[sticky]);
-            Assert.AreEqual(21, counter[coin]);
+            Assert.AreEqual(65, counter[sticky]);
+            Assert.AreEqual(35, counter[coin]);
         }
     }
 }

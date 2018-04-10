@@ -84,6 +84,8 @@ namespace Sorin
 
         public State(T data, int? seed = null)
         {
+            this.Data = data;
+
             _links = new List<Link<T>>();
             _isDirty = false;
 
